@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+   <base target="_blank">
+    <script>
+     var url1 ='https://github.com/YihangZhu/LaTeX-in-Google-Spreadsheet.git';
+     var winRef = window.open(url1);
+     winRef ? google.script.host.close() : window.alert('Please allow popup to redirect you.') ;
+     window.onload=function(){document.getElementById('url').href = url1;}
+    </script>
+  </head>
+  <body>
+    Please allow popup to redirect you, or <a id='url'> click here </a> to continue.
+  </body>
+</html>
