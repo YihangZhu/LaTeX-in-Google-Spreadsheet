@@ -1,7 +1,7 @@
 <h1 align = "center">LaTeX-Sheet</h1>
 <p align = "center"> Latest update (October 10, 2019) </p>
 
-The add-on is applied to convert a table in Google Spreadsheet to a Latex table or convert a Latex table to a Google Spreadsheet table.<p>
+The add-on is applied to convert a table in Google Spreadsheet to a LaTeX table or convert a LaTeX table to a Google Spreadsheet table.<p>
 
 ![menu](menu.png)  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ![sample](sample.png)
 <p><b> Description:</b></p><br> 
