@@ -41,7 +41,7 @@ given that they may not be plain text. For example, $x$ may be a mathematical no
 
 I enthusiastically welcome suggestions. 
 
-<h3>Privacy Policy:<h3>
+<h3>Privacy Policy:</h3>
 
 I (“LaTeX-Sheet”, “I”, “me” or “my”) understand that privacy is essential to the users of my product (“users”, “you”, “your”). This policy describes the steps I take to maintain your privacy when you are using my G Suit add-on (“Service”, "LaTeX-Sheet"). By using my Service, you agree to the collection and use of information in accordance with this policy. 
 
