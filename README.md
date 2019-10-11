@@ -1,7 +1,7 @@
 <h1 align = "center">LaTeX-Sheet</h1>
 <p align = "center"> Latest update (October 10, 2019) </p>
 
-The add-on is applied to convert a table in Google Spreadsheet to a Latex table or convert a Latex table to a Google Spreadsheet table.<p>
+The add-on is applied to convert a table in Google Spreadsheet to a LaTeX table or convert a LaTeX table to a Google Spreadsheet table.<p>
 
 ![menu](menu.png)  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ![sample](sample.png)
 <p><b> Description:</b></p><br> 
@@ -41,7 +41,7 @@ given that they may not be plain text. For example, $x$ may be a mathematical no
 
 I enthusiastically welcome suggestions. 
 
-<h3>Privacy Policy:<h3>
+<h3>Privacy Policy:</h3>
 
 I (“LaTeX-Sheet”, “I”, “me” or “my”) understand that privacy is essential to the users of my product (“users”, “you”, “your”). This policy describes the steps I take to maintain your privacy when you are using my G Suit add-on (“Service”, "LaTeX-Sheet"). By using my Service, you agree to the collection and use of information in accordance with this policy. 
 
