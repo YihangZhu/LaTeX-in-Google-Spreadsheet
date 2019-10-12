@@ -2,6 +2,5 @@
   "timeZone": "Europe/Brussels",
   "dependencies": {
   },
-  "exceptionLogging": "STACKDRIVER",
-  "oauthScopes": ["https://www.googleapis.com/auth/script.container.ui", "https://www.googleapis.com/auth/spreadsheets"]
+  "exceptionLogging": "STACKDRIVER"
 }

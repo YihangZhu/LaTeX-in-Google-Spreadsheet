@@ -27,20 +27,26 @@ function trimStart(str, substr) {
 function latexToSheet() {
 //  var spreadsheet = SpreadsheetApp.openById('11VL3bqvCkUJb-v_zRbscAiI--Y3b4YYdyGopZUv05k0');
 //  var range = spreadsheet.getSheetByName("table maker").getDataRange()
-//    var sheet = spreadsheet.getSheetByName("test")
-//  if (sheet ==null){
-//    spreadsheet.insertSheet("test");
-//    sheet = spreadsheet.getActiveSheet();
-//  }else{
-//    sheet.clear()
-//  }
-  
+
     var range = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet().getDataRange();
     var latexCode = range.getValues().join(" ");
-
+  
     // convert latex code to the table.
-    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-    sheet.clear();
+    var sheet;
+    var result = SpreadsheetApp.getUi().alert("Clear the current sheet for the new table?", SpreadsheetApp.getUi().ButtonSet.YES_NO_CANCEL)
+    if (result == "YES"){
+      sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+      sheet.clear();
+    }else if(result == "NO"){
+      sheet = SpreadsheetApp.getActiveSpreadsheet().insertSheet();
+    }else {
+      return 0;
+    }
+  
+    
+
+    
+    
 
 
     var rowIndex = 1;
