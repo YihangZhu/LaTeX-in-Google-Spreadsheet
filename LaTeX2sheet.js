@@ -42,12 +42,6 @@ function latexToSheet() {
     }else {
       return 0;
     }
-  
-    
-
-    
-    
-
 
     var rowIndex = 1;
     var columnIndex = 1;
