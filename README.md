@@ -1,7 +1,7 @@
 <h1 align = "center"> <a href="https://gsuite.google.com/marketplace/app/spreadlatex/218144906748">Spread-LaTeX</a></h1>
 <p align = "center"> Latest update (October 14, 2019) </p>
 
-A simply add-on for converting a Google spreadsheet table to a LaTeX table or a LaTeX table to a Google Spreadsheet table.<p>
+A simple add-on for converting a Google spreadsheet table to a LaTeX table or a LaTeX table to a Google Spreadsheet table.<p>
 
 ![menu](menu.png)  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ![sample](sample.png)
 <p><b> Description:</b></p><br> 
