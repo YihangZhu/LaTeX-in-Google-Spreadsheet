@@ -1,3 +1,4 @@
+ //=====================================================================================
 /**
  * trim " " and "," in str
  * @returns the trimmed str
@@ -25,6 +26,7 @@ function trimStart(str, substr) {
 }
 
 function latexToSheet() {
+    ui = SpreadsheetApp.getUi();
 //  var spreadsheet = SpreadsheetApp.openById('11VL3bqvCkUJb-v_zRbscAiI--Y3b4YYdyGopZUv05k0');
 //  var range = spreadsheet.getSheetByName("table maker").getDataRange()
 
@@ -33,7 +35,7 @@ function latexToSheet() {
   
     // convert latex code to the table.
     var sheet;
-    var result = SpreadsheetApp.getUi().alert("Clear the current sheet for the new table?", SpreadsheetApp.getUi().ButtonSet.YES_NO_CANCEL)
+    var result = SpreadsheetApp.getUi().alert("Clear the current sheet for the new table? Click \"No\" if needs a new sheet.", SpreadsheetApp.getUi().ButtonSet.YES_NO_CANCEL)
     if (result == "YES"){
       sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
       sheet.clear();
@@ -144,3 +146,4 @@ function latexToSheet() {
     
     Browser.msgBox('The table is loaded successfully!', Browser.Buttons.OK)
 }
+
