@@ -1,30 +1,3 @@
- //=====================================================================================
-/**
- * trim " " and "," in str
- * @returns the trimmed str
- */
-function trim(str) {
-    do {
-        var original = str;
-        str = str.replace(/(^,+)|(,+$)|(^\s+)|(\s+$)/g, '');
-    } while (original !== str);
-    return str;
-}
-
-/**
- *
- * @param str original string
- * @param substr
- * @returns true if substr is trimmed from string, false if str does not include substr.
- */
-function trimStart(str, substr) {
-    var ind = str.indexOf(substr);
-    if (ind !== -1) {
-        str = str.substring(ind + substr.length);
-    }
-    return str;
-}
-
 function latexToSheet() {
     ui = SpreadsheetApp.getUi();
 //  var spreadsheet = SpreadsheetApp.openById('11VL3bqvCkUJb-v_zRbscAiI--Y3b4YYdyGopZUv05k0');
@@ -32,17 +5,17 @@ function latexToSheet() {
 
     var range = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet().getDataRange();
     var latexCode = range.getValues().join(" ");
-  
+
     // convert latex code to the table.
     var sheet;
     var result = SpreadsheetApp.getUi().alert("Clear the current sheet for the new table? Click \"No\" if needs a new sheet.", SpreadsheetApp.getUi().ButtonSet.YES_NO_CANCEL)
-    if (result == "YES"){
-      sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-      sheet.clear();
-    }else if(result == "NO"){
-      sheet = SpreadsheetApp.getActiveSpreadsheet().insertSheet();
-    }else {
-      return 0;
+    if (result == "YES") {
+        sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+        sheet.clear();
+    } else if (result == "NO") {
+        sheet = SpreadsheetApp.getActiveSpreadsheet().insertSheet();
+    } else {
+        return 0;
     }
 
     var rowIndex = 1;
@@ -55,16 +28,16 @@ function latexToSheet() {
         }
         var row = latexCode.substr(0, ind);
         latexCode = latexCode.substring(ind + 2);
-        
+
         // trim the code for the borders
         while (true) {
-          str = trimStart(row, "\\cmidrule");
-          if(str !== row){
-            row = str;
-            row = trimStart(row, "}");
-          }else{
-            break;
-          }
+            str = trimStart(row, "\\cmidrule");
+            if (str !== row) {
+                row = str;
+                row = trimStart(row, "}");
+            } else {
+                break;
+            }
         }
 
         row = trimStart(row, "\\midrule");
@@ -78,14 +51,14 @@ function latexToSheet() {
             var cell = trim(row[j]);
             var cs = 1;
             var rs = 1;
-            
+
             str = trimStart(cell, "\\multicolumn");
             if (str !== cell) {
                 cell = str;
                 cs = Number(cell.substring(cell.indexOf("{") + 1, cell.indexOf("}")));
                 cell = cell.substring(cell.indexOf("{") + 7, cell.lastIndexOf("}"));
             }
-            
+
             str = trimStart(cell, "\\multirow");
             if (str !== cell) {
                 cell = str;
@@ -104,7 +77,7 @@ function latexToSheet() {
                 sheet.getRange(rowIndex, columnIndex).setBackground(color);
                 cell = trimStart(cell, "}");
             }
-            
+
             str = trimStart(cell, "\\ul");
             if (str !== cell) {
                 cell = str;
@@ -118,22 +91,25 @@ function latexToSheet() {
                 cell = cell.substring(cell.indexOf("{") + 1, cell.lastIndexOf("}"));
             }
             if (cell !== "") {
+
+                // if cell object is a number
                 if (cell.indexOf("%") !== -1) {
                     cell = cell.replace("\\%", "%");
                 }
-
-                // if cell object is a number
                 if (!isNaN(cell)) {
-                    ind = cell.indexOf(".");
-                    if (ind !== -1) {
-                        var form = "";
-                        for (var i = 0; i < (cell.substr(ind)).length-1; i++){form += "0"}                        
-                        form = "0." + form;
-                        sheet.getRange(rowIndex, columnIndex).setNumberFormat(form);
-                    } else {
-                        sheet.getRange(rowIndex, columnIndex).setNumberFormat("0");
+
+                    var form = "0";
+                    if (cell.indexOf(".") !== -1) {
+                        form += "." + repeat("0", cell.split(".")[1].length);
                     }
+                    if (cell.indexOf("%") !== -1) {
+                        form += "%";
+                    }
+                    sheet.getRange(rowIndex, columnIndex).setNumberFormat(form);
                     sheet.getRange(rowIndex, columnIndex).setHorizontalAlignment("right");
+                } else {
+                    sheet.getRange(rowIndex, columnIndex).setShowHyperlink(false);
+                    //                sheet.getRange(rowIndex, columnIndex).setValue(cell);
                 }
                 sheet.getRange(rowIndex, columnIndex).setValue(cell);
             }
@@ -143,7 +119,7 @@ function latexToSheet() {
         columnIndex = 1;
     }
     sheet.autoResizeColumns(1, sheet.getDataRange().getNumColumns());
-    
+
     Browser.msgBox('The table is loaded successfully!', Browser.Buttons.OK)
 }
 
