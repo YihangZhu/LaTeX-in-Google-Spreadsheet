@@ -173,7 +173,8 @@ function readCell(object, format, fontWeight, underline, backgraound, isMergedRa
             }
         }
         if (format.indexOf("#,##") != -1) {
-            object = object.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+            var str = String(object).split(".");
+            object = str[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "." + str[1];
         }
     }
     object = String(object);
