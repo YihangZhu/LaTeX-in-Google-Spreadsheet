@@ -129,11 +129,11 @@ function sheetToLatex() {
     }
 
     var str = "%Please add the following packages if necessary:" + lineBreak
-        + "%\\usepackage{booktabs, multirow} for borders and merged ranges" + lineBreak
+        + "%\\usepackage{booktabs, multirow} % for borders and merged ranges" + lineBreak
         + "%\\usepackage{soul}% for underlines" + lineBreak
         + "%\\usepackage[table]{xcolor} % for cell colors" + lineBreak
+        + "%\\usepackage{changepage,threeparttable} % for wide tables" + lineBreak
         + "%If the table is too wide, replace \\begin{table}[!htp]...\\end{table} with" + lineBreak
-        + "%\\usepackage{changepage,threeparttable}" + lineBreak
         + "%\\begin{adjustwidth}{-2.5 cm}{-2.5 cm}\\centering\\begin{threeparttable}[!htb]...\\end{threeparttable}\\end{adjustwidth}" + lineBreak
         + "\\begin{table}[!htp]\\centering" + lineBreak
         + "\\caption{" + title + "}\\label{tab:  }" + lineBreak
