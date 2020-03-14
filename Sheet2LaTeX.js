@@ -83,13 +83,13 @@ function sheetToLatex() {
             }
 
             // record a cmidrule border, if the cell or the merged range is not blank
-            if (r + 1 < columnNameRows && ((!cell.isBlank()) || (isPartOfMerge && !mergedRange.isBlank()))) {
-                if (isPartOfMerge && rangeNumRows > 1) {
-                    //the cell is not in the first row of a multirow merged range
-                    if (cellRow > rangeFirstRow) {
-                        cmidrules.push(c + 1);
+            if (r + 1 < columnNameRows) {
+                if (isPartOfMerge) {
+                    if (cellRow == mergedRange.getLastRow()) {
+                        //the cell is not in the first row of a multirow merged range
+                        cmidrules.push(c + 1)
                     }
-                } else {
+                } else if (not_blank(cell)) {
                     cmidrules.push(c + 1);
                 }
             }
@@ -151,15 +151,16 @@ function sheetToLatex() {
 function readCell(object, format, fontWeight, underline, backgraound, isMergedRange, rows, cols) {
     var type = typeof (object);
     if (type === "number" && format !== "") {
-//    object = Utilities.formatString(format, object)
         var trimedFormat = format.replace("%", "");
-        trimedFormat = trim(trimedFormat);
-        var decimalPlaces;
-        if (trimedFormat === "0") {
-            decimalPlaces = 0;
-        } else {
-            decimalPlaces = trimedFormat.split(".")[1].length;
+        // javascript regnex: replace all "#" remove all "," in the string. modifier g is to replace all the matches, + is find all the match 
+        trimedFormat = trimedFormat.replace(/#/g, "0")
+        trimedFormat = trimedFormat.replace(/,+/, "");
+        var decimalPlaces = 0;
+        var decimals = trimedFormat.split(".")
+        if (decimals.length > 1) {
+            decimalPlaces = decimals[1].length;
         }
+
         // if the data is a percentage value
         if (format.indexOf("%") !== -1) {
             object = object * 100;
@@ -168,7 +169,7 @@ function readCell(object, format, fontWeight, underline, backgraound, isMergedRa
             }
             object = String(object) + "%"
         } else {
-            if (decimalPlaces <= 6) {
+            if (decimalPlaces > 0) {
                 object = object.toFixed(decimalPlaces)
             }
         }
@@ -217,4 +218,10 @@ function readCell(object, format, fontWeight, underline, backgraound, isMergedRa
         }
     }
     return object;
+}
+
+function not_blank(cell) {
+    var str = cell.getValue()
+    str = str.replace(/\s+/, "")
+    return str.length > 0;
 }

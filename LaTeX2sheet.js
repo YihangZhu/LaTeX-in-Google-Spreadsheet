@@ -4,7 +4,14 @@ function latexToSheet() {
 //  var range = spreadsheet.getSheetByName("table maker").getDataRange()
 
     var range = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet().getDataRange();
-    var latexCode = range.getValues().join(" ");
+    var table = range.getValues();
+    var latexCode = ""
+    for (var r = 0; r < table.length; r++) {
+        for (var c = 0; c < table[r].length; c++) {
+            latexCode += table[r][c];
+        }
+    }
+//    var latexCode = range.getValues().join("");
 
     // convert latex code to the table.
     var sheet;
@@ -48,7 +55,10 @@ function latexToSheet() {
         }
         row = row.split("&");
         for (var j = 0; j < row.length; j++) {
-            var cell = trim(row[j]);
+            //remove all the white space at the beginning and end of the string.
+            var cell = trimWhiteSpace(row[j]);
+            //remove all the automatically generated ",,"
+//            cell = cell.replace(/(,,)+/, "")
             var cs = 1;
             var rs = 1;
 
@@ -100,7 +110,8 @@ function latexToSheet() {
 
                     var form = "0";
                     if (cell.indexOf(".") !== -1) {
-                        form += "." + repeat("0", cell.split(".")[1].length);
+                        var decimals = cell.split(".")[1]
+                        form += "." + repeat("0", decimals.length);
                     }
                     if (cell.indexOf("%") !== -1) {
                         form += "%";
@@ -123,3 +134,36 @@ function latexToSheet() {
     Browser.msgBox('The table is loaded successfully!', Browser.Buttons.OK)
 }
 
+/**
+ * repeat str for num times.
+ * num larger than 1.
+ **/
+function repeat(str, num) {
+    var newStr = "";
+    for (var i = 0; i < num; i++) {
+        newStr += str;
+    }
+    return newStr;
+}
+
+/**
+ *
+ * @param str original string
+ * @param substr
+ * @returns true if substr is trimmed from string, false if str does not include substr.
+ */
+function trimStart(str, substr) {
+    var ind = str.indexOf(substr);
+    if (ind !== -1) {
+        str = str.substring(ind + substr.length);
+    }
+    return str;
+}
+
+function trimWhiteSpace(str) {
+    do {
+        var original = str;
+        str = str.replace(/(^\s)|(\s$)/g, "");
+    } while (original !== str);
+    return str;
+}
