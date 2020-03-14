@@ -11,6 +11,7 @@ Spread-LaTeX add-on is built to solve this problem. It simply contains two funct
 convert a selected Google Spreadsheet table to a LaTeX table and convert a LaTeX table to a Google Spreadsheet table.<p>
 
 ====================<b><i> How to use Spread-LaTeX? </i></b>=====================<br>
+Click <a href="https://youtu.be/60UTvTIES2E">here</a> for the youtube video. <br>
 Install the add-on:<br> 
 (1) open a Google Spreadsheet, <br>
 (2) click "Add-ons" ---> "Get add-ons" ---> search "Spread-LaTeX" and install. <br>
