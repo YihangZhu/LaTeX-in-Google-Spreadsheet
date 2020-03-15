@@ -221,7 +221,7 @@ function readCell(object, format, fontWeight, underline, backgraound, isMergedRa
 }
 
 function not_blank(cell) {
-    var str = cell.getValue()
+    var str = String(cell.getValue())
     str = str.replace(/\s+/, "")
     return str.length > 0;
 }
