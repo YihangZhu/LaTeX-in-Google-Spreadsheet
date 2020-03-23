@@ -11,7 +11,7 @@ function sheetToLatex() {
     var table = sheet.getActiveRange();
 
     //get number of rows for column names for determining midrule border
-    var result = ui.prompt("Number of the rows for the column names:",
+    var result = ui.prompt("How many rows for the table header:",
         ui.ButtonSet.OK_CANCEL);
     if (result.getSelectedButton() != 'OK') {
         return 0;
