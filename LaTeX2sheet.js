@@ -104,7 +104,10 @@ function latexToSheet() {
 
                 // if cell object is a number
                 if (cell.indexOf("%") !== -1) {
-                    cell = cell.replace("\\%", "%");
+                    cell = cell.replace(/\\%/g, "%");
+                }
+                if (cell.indexOf("_") != -1 & cell.indexOf("$") == -1) {
+                    cell = cell.replace(/\\_/g, "_")
                 }
                 if (!isNaN(cell)) {
 

@@ -33,8 +33,9 @@ Convert a LaTeX table to a spreadsheet table:<br>
 (2) Package {xcolor} is used for cell colours. <br>
 (3) Package {soul} is used for underlines. <br>
 (3) Environments {tabular} and {table} are used. <br>
-(4) Special LaTeX chars: only "%"s are replaced with "\\%". The rest special LaTeX chars remains intact, 
-given that they may not be plain text. For example, $x$ may be a mathematical notation.<br> 
+(4) Each "%" is replaced with "\\%". Each"\_" is replaced with "\\_" only if there is no "$" in the cell. 
+The rest special LaTeX chars remains intact, given that they may not be plain text. 
+For example, $x$ may be a mathematical notation.<br> 
 (5) For the purpose of simplicity, this add-on only reads the following information from a spreadsheet table: 
 <i> the data, data formats, highlights, font weights, underlines and merged ranges.</i><br> 
 (6) Tables’ configurations such as alignments and borders are generated via the code using a default setting.<br>

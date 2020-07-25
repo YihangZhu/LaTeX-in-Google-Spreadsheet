@@ -162,25 +162,33 @@ function readCell(object, format, fontWeight, underline, backgraound, isMergedRa
         }
 
         // if the data is a percentage value
+        var percentage = ""
         if (format.indexOf("%") !== -1) {
             object = object * 100;
-            if (decimalPlaces <= 6) {
-                object = object.toFixed(decimalPlaces)
-            }
-            object = String(object) + "%"
-        } else {
-            if (decimalPlaces > 0) {
-                object = object.toFixed(decimalPlaces)
-            }
+            percentage = "\\%"
         }
+
+
+        if (String(object).indexOf(".") != -1 || decimalPlaces <= 8) {
+            object = object.toFixed(decimalPlaces)
+        }
+
+        object = String(object) + percentage
+
         if (format.indexOf("#,##") != -1) {
-            var str = String(object).split(".");
+            var str = object.split(".");
             object = str[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "." + str[1];
         }
+    } else {
+        object = String(object);
+        var ind1 = object.indexOf("_")
+        var ind2 = object.indexOf("$")
+        if (ind1 != -1 & ind2 == -1) {
+            object = object.replace(/_/g, "\\_")
+        }
     }
-    object = String(object);
 
-    object = object.replace("%", "\\%");
+//    object = object.replace("%", "\\%");
 
     if (fontWeight === 'bold') {
         object = "\\textbf{" + object + "}";
