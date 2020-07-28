@@ -12,5 +12,5 @@ function onOpen(e) {
 
 function donate() {
     var ui = HtmlService.createHtmlOutputFromFile("donation")
-    SpreadsheetApp.getUi().showModelessDialog(ui, "Donate 0.66 for the domain cost");
+    SpreadsheetApp.getUi().showModelessDialog(ui, "Donation for the domain cost")
 }
