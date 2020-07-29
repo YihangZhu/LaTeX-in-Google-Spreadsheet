@@ -168,7 +168,7 @@ function readCell(object, format, fontWeight, underline, backgraound, isMergedRa
             percentage = "\\%"
         }
 
-
+        // 2.00   2.02
         if (String(object).indexOf(".") != -1 || decimalPlaces <= 8) {
             object = object.toFixed(decimalPlaces)
         }
@@ -177,7 +177,10 @@ function readCell(object, format, fontWeight, underline, backgraound, isMergedRa
 
         if (format.indexOf("#,##") != -1) {
             var str = object.split(".");
-            object = str[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "." + str[1];
+            object = str[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+            if (str.length > 1) {
+                object = object + "." + str[1];
+            }
         }
     } else {
         object = String(object);
