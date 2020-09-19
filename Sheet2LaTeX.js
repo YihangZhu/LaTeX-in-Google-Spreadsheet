@@ -169,7 +169,7 @@ function readCell(object, format, fontWeight, underline, backgraound, isMergedRa
         }
 
         // 2.00   2.02
-        if (String(object).indexOf(".") != -1 || decimalPlaces <= 8) {
+        if (decimalPlaces < 15) {
             object = object.toFixed(decimalPlaces)
         }
 
