@@ -151,42 +151,47 @@ function sheetToLatex() {
 function readCell(object, format, fontWeight, underline, backgraound, isMergedRange, rows, cols) {
     var type = typeof (object);
     if (type === "number" && format !== "") {
-        var trimedFormat = format.replace("%", "");
-        // javascript regnex: replace all "#" remove all "," in the string. modifier g is to replace all the matches, + is find all the match 
-        trimedFormat = trimedFormat.replace(/#/g, "0")
-        trimedFormat = trimedFormat.replace(/,+/, "");
-        var decimalPlaces = 0;
-        var decimals = trimedFormat.split(".")
-        if (decimals.length > 1) {
-            decimalPlaces = decimals[1].length;
-        }
+        if (format.indexOf("E") !== -1) {
+            var n = format.split("E")[0].split(".")[1].length;
+            object = object.toExponential(n);
+        } else {
+            var trimedFormat = format.replace("%", "");
+            // javascript regnex: replace all "#" remove all "," in the string. modifier g is to replace all the matches, + is find all the match
+            trimedFormat = trimedFormat.replace(/#/g, "0")
+            trimedFormat = trimedFormat.replace(/,+/, "");
+            var decimalPlaces = 0;
+            var decimals = trimedFormat.split(".")
+            if (decimals.length > 1) {
+                decimalPlaces = decimals[1].length;
+            }
 
-        // if the data is a percentage value
-        var percentage = ""
-        if (format.indexOf("%") !== -1) {
-            object = object * 100;
-            percentage = "\\%"
-        }
+            // if the data is a percentage value
+            var percentage = ""
+            if (format.indexOf("%") !== -1) {
+                object = object * 100;
+                percentage = "\\%"
+            }
 
-        // 2.00   2.02
-        if (decimalPlaces < 15) {
-            object = object.toFixed(decimalPlaces)
-        }
+            // 2.00   2.02
+            if (decimalPlaces < 15) {
+                object = object.toFixed(decimalPlaces)
+            }
 
-        object = String(object) + percentage
+            object = String(object) + percentage
 
-        if (format.indexOf("#,##") != -1) {
-            var str = object.split(".");
-            object = str[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
-            if (str.length > 1) {
-                object = object + "." + str[1];
+            if (format.indexOf("#,##") !== -1) {
+                var str = object.split(".");
+                object = str[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+                if (str.length > 1) {
+                    object = object + "." + str[1];
+                }
             }
         }
     } else {
         object = String(object);
         var ind1 = object.indexOf("_")
         var ind2 = object.indexOf("$")
-        if (ind1 != -1 & ind2 == -1) {
+        if ((ind1 !== -1) && (ind2 === -1)) {
             object = object.replace(/_/g, "\\_")
         }
     }
