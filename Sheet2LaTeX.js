@@ -174,6 +174,7 @@ function readCell(object, format, fontWeight, underline, backgraound, isMergedRa
 
             // 2.00   2.02
             if (decimalPlaces < 15) {
+                object += Number.EPSILON
                 object = object.toFixed(decimalPlaces)
             }
 
@@ -195,8 +196,9 @@ function readCell(object, format, fontWeight, underline, backgraound, isMergedRa
             object = object.replace(/_/g, "\\_")
         }
     }
-
-//    object = object.replace("%", "\\%");
+    if (object.indexOf('&') === -1) {
+        object = object.replace("%", "\\%");
+    }
 
     if (fontWeight === 'bold') {
         object = "\\textbf{" + object + "}";
