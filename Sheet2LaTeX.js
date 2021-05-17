@@ -196,9 +196,9 @@ function readCell(object, format, fontWeight, underline, backgraound, isMergedRa
             object = object.replace(/_/g, "\\_")
         }
     }
-    if (object.indexOf('&') === -1) {
-        object = object.replace("%", "\\%");
-    }
+//    if (object.indexOf('&') === -1) {
+//      object = object.replace("%", "\\%");
+//    }
 
     if (fontWeight === 'bold') {
         object = "\\textbf{" + object + "}";
