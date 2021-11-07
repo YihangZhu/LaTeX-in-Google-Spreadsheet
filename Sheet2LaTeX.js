@@ -152,7 +152,11 @@ function readCell(object, format, fontWeight, underline, backgraound, isMergedRa
     var type = typeof (object);
     if (type === "number" && format !== "") {
         if (format.indexOf("E") !== -1) {
-            var n = format.split("E")[0].split(".")[1].length;
+            var saveN = format.split("E")[0].split(".")
+            var n = 0;
+            if (saveN.length > 1) {
+                n = saveN[1].length;
+            }
             object = object.toExponential(n);
         } else {
             var trimedFormat = format.replace("%", "");
