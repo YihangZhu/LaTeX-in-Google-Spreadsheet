@@ -199,10 +199,11 @@ function readCell(object, format, fontWeight, underline, backgraound, isMergedRa
         if ((ind1 !== -1) && (ind2 === -1)) {
             object = object.replace(/_/g, "\\_")
         }
+        var ind3 = object.indexOf("%")
+        if (ind3 !== -1) {
+            object = object.replace(/%/g, "\\%")
+        }
     }
-//    if (object.indexOf('&') === -1) {
-//      object = object.replace("%", "\\%");
-//    }
 
     if (fontWeight === 'bold') {
         object = "\\textbf{" + object + "}";
