@@ -1,17 +1,29 @@
 function latexToSheet() {
     ui = SpreadsheetApp.getUi();
-//  var spreadsheet = SpreadsheetApp.openById('11VL3bqvCkUJb-v_zRbscAiI--Y3b4YYdyGopZUv05k0');
-//  var range = spreadsheet.getSheetByName("table maker").getDataRange()
+    // var spreadsheet = SpreadsheetApp.openById('1gBEkOtHDZoUsF4RwV_mgrbAJ7rUlCzEPs3bRH51rK-o');
+    // var range = spreadsheet.getSheetByName("table maker").getDataRange()
 
     var range = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet().getDataRange();
     var table = range.getValues();
-    var latexCode = ""
+    var latexCode = []
+    var record = false
+    // console.log(table)
     for (var r = 0; r < table.length; r++) {
         for (var c = 0; c < table[r].length; c++) {
-            latexCode += table[r][c];
+            cell_value = table[r][c]
+
+            if (cell_value.includes('\\bottomrule')) {
+                record = false
+            }
+            if (record) {
+                cell_value = getContent(cell_value)
+                latexCode.push(cell_value);
+            }
+            if (cell_value.includes('\\begin{tabular}')) {
+                record = true
+            }
         }
     }
-//    var latexCode = range.getValues().join("");
 
     // convert latex code to the table.
     var sheet;
@@ -24,56 +36,40 @@ function latexToSheet() {
     } else {
         return 0;
     }
-
+    // console.log(latexCode)
     var rowIndex = 1;
     var columnIndex = 1;
     var str;
-    while (true) {
-        var ind = latexCode.indexOf("\\\\");
-        if (ind === -1) {
-            break;
-        }
-        var row = latexCode.substr(0, ind);
-        latexCode = latexCode.substring(ind + 2);
 
-        // trim the code for the borders
-        while (true) {
-            str = trimStart(row, "\\cmidrule");
-            if (str !== row) {
-                row = str;
-                row = trimStart(row, "}");
-            } else {
-                break;
-            }
-        }
-
-        row = trimStart(row, "\\midrule");
-        row = trimStart(row, "\\toprule");
-
-        if (row.indexOf("\\bottomrule") !== -1) {
-            continue;
-        }
+    for (let count = 0; count < latexCode.length; count++) {
+        var row = latexCode[count]
+        // if (count == 16){
+        // console.log(count)
+        // }
         row = row.split("&");
         for (var j = 0; j < row.length; j++) {
             //remove all the white space at the beginning and end of the string.
             var cell = trimWhiteSpace(row[j]);
             //remove all the automatically generated ",,"
-//            cell = cell.replace(/(,,)+/, "")
             var cs = 1;
             var rs = 1;
 
             str = trimStart(cell, "\\multicolumn");
             if (str !== cell) {
                 cell = str;
-                cs = Number(cell.substring(cell.indexOf("{") + 1, cell.indexOf("}")));
-                cell = cell.substring(cell.indexOf("{") + 7, cell.lastIndexOf("}"));
+                idx_start = cell.indexOf("{")
+                idx_end = cell.indexOf("}")
+                cs = Number(cell.substring(idx_start + 1, idx_end));
+                cell = cell.substring(idx_end + 5, cell.lastIndexOf("}"));
             }
 
             str = trimStart(cell, "\\multirow");
             if (str !== cell) {
                 cell = str;
-                rs = Number(cell.substring(cell.indexOf("{") + 1, cell.indexOf("}")));
-                cell = cell.substring(cell.indexOf("{") + 7, cell.lastIndexOf("}"));
+                idx_start = cell.indexOf("{")
+                idx_end = cell.indexOf("}")
+                rs = Number(cell.substring(idx_start + 1, idx_end));
+                cell = cell.substring(idx_end + 5, cell.lastIndexOf("}"));
             }
 
             if (rs > 1 || cs > 1) {
@@ -101,12 +97,11 @@ function latexToSheet() {
                 cell = cell.substring(cell.indexOf("{") + 1, cell.lastIndexOf("}"));
             }
             if (cell !== "") {
-
                 // if cell object is a number
                 if (cell.indexOf("%") !== -1) {
                     cell = cell.replace(/\\%/g, "%");
                 }
-                if (cell.indexOf("_") != -1 & cell.indexOf("$") == -1) {
+                if (cell.indexOf("_") !== -1 & cell.indexOf("$") === -1) {
                     cell = cell.replace(/\\_/g, "_")
                 }
                 if (!isNaN(cell)) {
@@ -161,6 +156,15 @@ function trimStart(str, substr) {
         str = str.substring(ind + substr.length);
     }
     return str;
+}
+
+function getContent(str) {
+    var ind = str.lastIndexOf('\\\\');
+    if (ind != -1) {
+        str = str.substring(0, ind - 1)
+    }
+    str = trimWhiteSpace(str)
+    return str
 }
 
 function trimWhiteSpace(str) {
