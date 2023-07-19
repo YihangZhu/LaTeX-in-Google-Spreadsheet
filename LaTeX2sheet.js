@@ -6,28 +6,32 @@ function latexToSheet() {
     var range = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet().getDataRange();
     var table = range.getValues();
     var latexCode = []
-    var record = false
+    var record = true
     // console.log(table)
-    for (var r = 0; r < table.length; r++) {
-        for (var c = 0; c < table[r].length; c++) {
-            cell_value = table[r][c]
-
-            if (cell_value.includes('\\bottomrule')) {
-                record = false
-            }
-            if (record) {
-                cell_value = getContent(cell_value)
-                latexCode.push(cell_value);
-            }
-            if (cell_value.includes('\\begin{tabular}')) {
-                record = true
+    for (var r = 0; r < table.length && record; r++) {
+        for (var c = 0; c < table[r].length && record; c++) {
+            if (table[r][c].includes('\\begin{tabular}')) {
+                while (true){
+                    r += 1;
+                    cell_value = table[r][c]
+                    if (cell_value.includes('\\bottomrule')) {
+                        record = false
+                        break;
+                    }
+                    cell_value = getContent(cell_value)
+                    latexCode.push(cell_value);
+                }
             }
         }
+    }
+    if (latexCode.length === 0){
+        SpreadsheetApp.getUi().alert("V_Jul_19_2023: please provide me all the code from \\begin{tabular} to \\end{tabular}", SpreadsheetApp.getUi().ButtonSet.OK)
+        return 0;
     }
 
     // convert latex code to the table.
     var sheet;
-    var result = SpreadsheetApp.getUi().alert("Clear the current sheet for the new table? Click \"No\" if needs a new sheet.", SpreadsheetApp.getUi().ButtonSet.YES_NO_CANCEL)
+    var result = SpreadsheetApp.getUi().alert("V_Jul_19_2023: Clear the current sheet for the new table? Click \"No\" if needs a new sheet.", SpreadsheetApp.getUi().ButtonSet.YES_NO_CANCEL)
     if (result == "YES") {
         sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
         sheet.clear();
