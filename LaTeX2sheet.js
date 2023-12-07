@@ -1,4 +1,8 @@
 function latexToSheet() {
+    var result = SpreadsheetApp.getUi().alert("Only work for the LaTeX code generated via the spread-latex. Please provide me all the LaTeX code at least from \\begin{tabular} to \\end{tabular}. Click OK to continue.", SpreadsheetApp.getUi().ButtonSet.OK_CANCEL)
+    if (result != 'OK') {
+        return 0;
+    }
     ui = SpreadsheetApp.getUi();
     // var spreadsheet = SpreadsheetApp.openById('1gBEkOtHDZoUsF4RwV_mgrbAJ7rUlCzEPs3bRH51rK-o');
     // var range = spreadsheet.getSheetByName("table maker").getDataRange()
@@ -6,32 +10,45 @@ function latexToSheet() {
     var range = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet().getDataRange();
     var table = range.getValues();
     var latexCode = []
-    var record = true
     // console.log(table)
-    for (var r = 0; r < table.length && record; r++) {
-        for (var c = 0; c < table[r].length && record; c++) {
-            if (table[r][c].includes('\\begin{tabular}')) {
-                while (true){
-                    r += 1;
-                    cell_value = table[r][c]
-                    if (cell_value.includes('\\bottomrule')) {
-                        record = false
-                        break;
-                    }
-                    cell_value = getContent(cell_value)
-                    latexCode.push(cell_value);
-                }
+    var start_r = -1
+    var start_c = -1
+    var end_c = -1
+    for (var r = 0; r < table.length; r++) {
+        for (var c = 0; c < table[r].length; c++) {
+            if (String(table[r][c]).includes('\\begin{tabular}')) {
+                start_r = r
+                start_c = c
+            }
+            if (String(table[r][c]).includes('\\end{tabular}')) {
+                end_c = c
             }
         }
     }
-    if (latexCode.length === 0){
-        SpreadsheetApp.getUi().alert("V_Jul_19_2023: please provide me all the code from \\begin{tabular} to \\end{tabular}", SpreadsheetApp.getUi().ButtonSet.OK)
+    if (start_r === -1 || start_c === -1) {
+        SpreadsheetApp.getUi().alert("Please provide me all the LaTeX code from \\begin{tabular} to \\end{tabular}", SpreadsheetApp.getUi().ButtonSet.OK)
         return 0;
     }
 
+    if (end_c === -1) {
+        SpreadsheetApp.getUi().alert("\\end{tabular} is not found", SpreadsheetApp.getUi().ButtonSet.OK)
+        return 0;
+    }
+
+    while (true) {
+        start_r += 1;
+        cell_value = table[start_r][start_c]
+        if (cell_value.includes('\\bottomrule') || cell_value.includes('\\end{tabular}')) {
+            break;
+        }
+        cell_value = getContent(cell_value)
+        latexCode.push(cell_value);
+    }
+
+
     // convert latex code to the table.
     var sheet;
-    var result = SpreadsheetApp.getUi().alert("V_Jul_19_2023: Clear the current sheet for the new table? Click \"No\" if needs a new sheet.", SpreadsheetApp.getUi().ButtonSet.YES_NO_CANCEL)
+    var result = SpreadsheetApp.getUi().alert("Clear the current sheet for the new table? Click \"No\" if needs a new sheet.", SpreadsheetApp.getUi().ButtonSet.YES_NO_CANCEL)
     if (result == "YES") {
         sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
         sheet.clear();
@@ -104,6 +121,9 @@ function latexToSheet() {
                 // if cell object is a number
                 if (cell.indexOf("%") !== -1) {
                     cell = cell.replace(/\\%/g, "%");
+                }
+                if (cell.indexOf("#") !== -1) {
+                    cell = cell.replace(/\\#/g, "#")
                 }
                 if (cell.indexOf("_") !== -1 & cell.indexOf("$") === -1) {
                     cell = cell.replace(/\\_/g, "_")
