@@ -61,7 +61,6 @@ function latexToSheet() {
     var rowIndex = 1;
     var columnIndex = 1;
     var str;
-
     for (let count = 0; count < latexCode.length; count++) {
         var row = latexCode[count]
         // if (count == 16){
@@ -118,9 +117,18 @@ function latexToSheet() {
                 cell = cell.substring(cell.indexOf("{") + 1, cell.lastIndexOf("}"));
             }
             if (cell !== "") {
+                var percentage = ""
+                var currency = ""
                 // if cell object is a number
                 if (cell.indexOf("%") !== -1) {
-                    cell = cell.replace(/\\%/g, "%");
+                    var a = cell.substring(cell.length - 2, cell.length)
+                    var b = cell.substring(0, cell.length - 2)
+                    if (a === "\\%" && !isNaN(b)) {
+                        percentage = "%"
+                        cell = b
+                    } else {
+                        cell = cell.replace(/\\%/g, "%");
+                    }
                 }
                 if (cell.indexOf("#") !== -1) {
                     cell = cell.replace(/\\#/g, "#")
@@ -128,16 +136,26 @@ function latexToSheet() {
                 if (cell.indexOf("_") !== -1 & cell.indexOf("$") === -1) {
                     cell = cell.replace(/\\_/g, "_")
                 }
+                if (cell.indexOf("\\$") !== -1) {
+                    var a = cell.substring(0, 2)
+                    var b = cell.substring(2, cell.length)
+                    if (a == "\\$" && !isNaN(b)) {
+                        cell = b
+                        currency = "$"
+                    } else {
+                        cell = cell.replace(/\\$/g, "$");
+                    }
+                }
                 if (!isNaN(cell)) {
-
                     var form = "0";
                     if (cell.indexOf(".") !== -1) {
-                        var decimals = cell.split(".")[1]
+                        var decimals = cell.split(".")[1].split("e")[0]
                         form += "." + repeat("0", decimals.length);
                     }
-                    if (cell.indexOf("%") !== -1) {
-                        form += "%";
+                    if (cell.indexOf('e') !== -1) {
+                        form += "E+00"
                     }
+                    form = currency + form + percentage
                     sheet.getRange(rowIndex, columnIndex).setNumberFormat(form);
                     sheet.getRange(rowIndex, columnIndex).setHorizontalAlignment("right");
                 } else {
