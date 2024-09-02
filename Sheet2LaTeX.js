@@ -13,7 +13,7 @@ function sheetToLatex() {
     var ranges = sheet.getActiveRangeList().getRanges()
     var buff_sheet = null
     if (ranges.length > 1) {
-        var result = ui.alert(ranges.length + " ranges are selected, click OK to continue, otherwise Cancel \n (a set of consecutive cells is a range)", ui.ButtonSet.OK_CANCEL)
+        var result = ui.alert(ranges.length + " ranges are selected, click OK to continue, otherwise Cancel \n (a set of consecutive cells forms a range)", ui.ButtonSet.OK_CANCEL)
         if (result != 'OK') {
             return 0;
         }
@@ -45,7 +45,7 @@ function sheetToLatex() {
             orig_range.copyTo(buff_sheet.getRange(row, col), SpreadsheetApp.CopyPasteType.PASTE_NORMAL, false);
         }
         table = buff_sheet.getRange(1, 1, buff_sheet.getLastRow(), buff_sheet.getLastColumn())
-        result = ui.alert("Is the table displayed correct, otherwise Cancel.", ui.ButtonSet.OK_CANCEL)
+        var result = ui.alert("Is the table displayed correct, otherwise Cancel.\n (The sheet for previewing the table will be automatically deleted later.)", ui.ButtonSet.OK_CANCEL)
         if (result != 'OK') {
             spreadsheet.deleteSheet(buff_sheet)
             return 0;
@@ -242,6 +242,9 @@ function readCell(object, format, fontWeight, underline, backgraound, isMergedRa
                     object = object + "." + str[1];
                 }
             }
+        }
+        if (format.indexOf("$") !== -1) {
+            object = "\\$" + object
         }
     } else {
         object = String(object);
