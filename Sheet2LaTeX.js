@@ -35,12 +35,16 @@ function sheetToLatex() {
         } else {
             ranges.sort((a, b) => a.getLastRow() - b.getLastRow())
         }
+        var r_increase = 0
+        var c_increase = 0
         for (var s = 0; s < ranges.length; s++) {
             var orig_range = ranges[s]
             if (concat_horizontally) {
-                col = buff_sheet.getLastColumn() + 1
+                col = c_increase + 1
+                c_increase += orig_range.getNumColumns()
             } else {
-                row = buff_sheet.getLastRow() + 1
+                row = r_increase + 1
+                r_increase += orig_range.getNumRows()
             }
             orig_range.copyTo(buff_sheet.getRange(row, col), SpreadsheetApp.CopyPasteType.PASTE_NORMAL, false);
         }
