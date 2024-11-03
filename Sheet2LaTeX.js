@@ -46,7 +46,8 @@ function sheetToLatex() {
                 row = r_increase + 1
                 r_increase += orig_range.getNumRows()
             }
-            orig_range.copyTo(buff_sheet.getRange(row, col), SpreadsheetApp.CopyPasteType.PASTE_NORMAL, false);
+            orig_range.copyTo(buff_sheet.getRange(row, col), SpreadsheetApp.CopyPasteType.PASTE_VALUES, false);
+            orig_range.copyTo(buff_sheet.getRange(row, col), SpreadsheetApp.CopyPasteType.PASTE_FORMAT, false);
         }
         table = buff_sheet.getRange(1, 1, buff_sheet.getLastRow(), buff_sheet.getLastColumn())
         var result = ui.alert("Is the table displayed correct, otherwise Cancel.\n (The sheet for previewing the table will be automatically deleted later.)", ui.ButtonSet.OK_CANCEL)
