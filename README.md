@@ -83,4 +83,4 @@ The Service is free of charge. Further, while I am making every effort to ensure
 4. Copyright <br>
 Spread-LaTeX add-on is original and owned by me and protected by international copyright, and other intellectual property or proprietary rights laws. 
  
-<h3>Developer: <a href="https://sites.google.com/view/zhuyihang/home"> Yi-Hang Zhu</a> </h3>
+<h3>Developer: <a href="https://yihangzhu.github.io/yh-site/"> Yi-Hang Zhu</a> </h3>
