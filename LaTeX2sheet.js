@@ -3,7 +3,7 @@ function latexToSheet() {
     if (result != 'OK') {
         return 0;
     }
-    ui = SpreadsheetApp.getUi();
+    var ui = SpreadsheetApp.getUi();
     // var spreadsheet = SpreadsheetApp.openById('1gBEkOtHDZoUsF4RwV_mgrbAJ7rUlCzEPs3bRH51rK-o');
     // var range = spreadsheet.getSheetByName("table maker").getDataRange()
 
@@ -37,7 +37,7 @@ function latexToSheet() {
 
     while (true) {
         start_r += 1;
-        cell_value = table[start_r][start_c]
+        var cell_value = table[start_r][start_c]
         if (cell_value.includes('\\bottomrule') || cell_value.includes('\\end{tabular}')) {
             break;
         }
@@ -77,8 +77,8 @@ function latexToSheet() {
             str = trimStart(cell, "\\multicolumn");
             if (str !== cell) {
                 cell = str;
-                idx_start = cell.indexOf("{")
-                idx_end = cell.indexOf("}")
+                var idx_start = cell.indexOf("{")
+                var idx_end = cell.indexOf("}")
                 cs = Number(cell.substring(idx_start + 1, idx_end));
                 cell = cell.substring(idx_end + 5, cell.lastIndexOf("}"));
             }
@@ -86,8 +86,8 @@ function latexToSheet() {
             str = trimStart(cell, "\\multirow");
             if (str !== cell) {
                 cell = str;
-                idx_start = cell.indexOf("{")
-                idx_end = cell.indexOf("}")
+                var idx_start = cell.indexOf("{")
+                var idx_end = cell.indexOf("}")
                 rs = Number(cell.substring(idx_start + 1, idx_end));
                 cell = cell.substring(idx_end + 5, cell.lastIndexOf("}"));
             }
@@ -133,7 +133,7 @@ function latexToSheet() {
                 if (cell.indexOf("#") !== -1) {
                     cell = cell.replace(/\\#/g, "#")
                 }
-                if (cell.indexOf("_") !== -1 & cell.indexOf("$") === -1) {
+                if (cell.indexOf("_") !== -1 && cell.indexOf("$") === -1) {
                     cell = cell.replace(/\\_/g, "_")
                 }
                 if (cell.indexOf("\\$") !== -1) {
@@ -143,7 +143,7 @@ function latexToSheet() {
                         cell = b
                         currency = "$"
                     } else {
-                        cell = cell.replace(/\\$/g, "$");
+                        cell = cell.replace(/\\\$/g, "$");
                     }
                 }
                 if (!isNaN(cell)) {
